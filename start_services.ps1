@@ -39,7 +39,11 @@ Start-Process -FilePath "cmd.exe" -ArgumentList "/c", "npx http-server `"$serveD
 
 Write-Host "Levantando stac-fastapi (API STAC dinamica, puerto 8080)..."
 $env:PGUSER = "postgres"
-$env:PGPASSWORD = "pss_local_dev"
+# Password is not stored here: set it once as a user environment variable
+# (setx PGPASSWORD "<password>", then open a new terminal)
+if (-not $env:PGPASSWORD) {
+    throw "PGPASSWORD no esta definida. Ejecuta: setx PGPASSWORD `"<password>`" y abre una terminal nueva."
+}
 $env:PGHOST = "localhost"
 $env:PGPORT = "5432"
 $env:PGDATABASE = "pss_geo"
@@ -51,7 +55,7 @@ Start-Process -FilePath "C:\Users\Pedro\miniforge3\envs\pdal_env\python.exe" `
     -WindowStyle Hidden
 
 Write-Host "Levantando pg_featureserv (consultas por feature, puerto 58211)..."
-$env:DATABASE_URL = "postgresql://postgres:pss_local_dev@localhost:5432/pss_geo"
+$env:DATABASE_URL = "postgresql://postgres:$($env:PGPASSWORD)@localhost:5432/pss_geo"
 Start-Process -FilePath "C:\Users\Pedro\Documents\PSS\services\pg_featureserv\pg_featureserv.exe" `
     -ArgumentList "-c", "config\pg_featureserv.toml" `
     -WorkingDirectory "C:\Users\Pedro\Documents\PSS\services\pg_featureserv" `
