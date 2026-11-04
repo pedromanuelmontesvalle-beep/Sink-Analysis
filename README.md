@@ -194,15 +194,14 @@ Outputs are written to `flood_sink_comparison/`.
 
 ## Environment
 
-Developed on **Windows** with Python 3 in a conda environment. Main dependencies:
+Developed on **Windows** with Python 3.11. One conda environment covers all three notebooks and the serving stack:
 
-```
-geopandas  rasterio  gdal  shapely  pyproj  numpy  pandas  scipy  pyarrow  matplotlib
-whitebox-workflows  overturemaps  geoparquet-io
-pystac  pypgstac  stac-geoparquet  stac-fastapi-pgstac
+```powershell
+conda env create -f environment.yml
+conda activate sink-analysis
 ```
 
-GDAL and whitebox-workflows are easiest to install through conda-forge.
+GDAL, rasterio and geopandas come from conda-forge so they share one GDAL build; whitebox-workflows, overturemaps, geoparquet-io and the STAC packages are installed with pip at the versions the pipeline was run with.
 
 ## Notes before running
 
