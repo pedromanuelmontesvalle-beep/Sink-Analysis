@@ -1,0 +1,32 @@
+# Single environment for all three notebooks and the serving stack.
+#   conda env create -f environment.yml
+#   conda activate sink-analysis
+# GDAL-linked packages come from conda-forge so they share one GDAL build;
+# the rest are pinned to the versions the pipeline was run with.
+name: sink-analysis
+channels:
+  - conda-forge
+dependencies:
+  - python=3.11
+  - gdal>=3.12          # osgeo bindings, used by Chiba_flooding_mask (TPS warp)
+  - rasterio>=1.4
+  - geopandas=1.1
+  - shapely=2.1
+  - pyproj=3.7
+  - numpy=2.4
+  - pandas=3.0
+  - scipy=1.17
+  - pyarrow
+  - matplotlib
+  - ipykernel
+  - pip
+  - pip:
+      - whitebox-workflows==2.0.6
+      - overturemaps==1.0.2
+      - geoparquet-io==1.4.0
+      - pystac==1.15.2
+      - pypgstac[psycopg]==0.9.12
+      - stac-geoparquet==0.8.2
+      # serving stack (start_services.ps1)
+      - stac-fastapi-pgstac==6.4.0
+      - uvicorn==0.52.4
